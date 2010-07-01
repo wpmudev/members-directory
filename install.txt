@@ -1,0 +1,21 @@
+Plugin Name: Members Directory
+Author: Andrew Billits
+
+Files:
+----------------------------------------------------------------------
+members-directory.php - goes in /wp-content/mu-plugins
+
+Instructions:
+----------------------------------------------------------------------
+1) Place the files in the specified directories
+2) Create a page with the slug "members" without the quotes if the plugin fails to auto-create the page
+
+Please not that this plugin works best when the following plugins are installed:
+Friends
+http://premium.wpmudev.org/project/friends
+
+Post Indexer
+http://premium.wpmudev.org/project/post-indexer
+
+Comment Indexer
+http://premium.wpmudev.org/project/comment-indexer
