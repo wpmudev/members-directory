@@ -1,14 +1,14 @@
 <?php
 /*
 Plugin Name: Members Directory
-Plugin URI: 
-Description:
-Author: Andrew Billits (Incsub)
-Version: 1.0.5
+Plugin URI: http://premium.wpmudev.org/project/members-directory
+Description: Provides an automatic list of all the users on your site, with avatars, pagination, a built in search facility and extended customizable user profiles
+Author: Andrew Billits & Ulrich Sossou (Incsub)
+Version: 1.0.6
 Author URI:
 */
 
-/* 
+/*
 Copyright 2007-2009 Incsub (http://incsub.com)
 
 This program is free software; you can redistribute it and/or modify
@@ -67,15 +67,15 @@ function members_directory_site_admin_options() {
 	$members_directory_per_page = get_site_option('members_directory_per_page', '10');
 	$members_directory_background_color = get_site_option('members_directory_background_color', '#F2F2EA');
 	$members_directory_alternate_background_color = get_site_option('members_directory_alternate_background_color', '#FFFFFF');
-	$members_directory_border_color = get_site_option('members_directory_border_color', '#CFD0CB');	
+	$members_directory_border_color = get_site_option('members_directory_border_color', '#CFD0CB');
 	$members_directory_profile_show_posts = get_site_option('members_directory_profile_show_posts', 'yes');
 	$members_directory_profile_show_comments = get_site_option('members_directory_profile_show_comments', 'yes');
 	$members_directory_profile_show_friends = get_site_option('members_directory_profile_show_friends', 'yes');
 	?>
-		<h3><?php _e('Members Directory') ?></h3> 
+		<h3><?php _e('Members Directory') ?></h3>
 		<table class="form-table">
-            <tr valign="top"> 
-                <th width="33%" scope="row"><?php _e('Sort By') ?></th> 
+            <tr valign="top">
+                <th width="33%" scope="row"><?php _e('Sort By') ?></th>
                 <td>
                     <select name="members_directory_sort_by" id="members_directory_sort_by">
                        <option value="alphabetically" <?php if ( $members_directory_sort_by == 'alphabetically' ) { echo 'selected="selected"'; } ?> ><?php _e('Username (A-Z)'); ?></option>
@@ -83,8 +83,8 @@ function members_directory_site_admin_options() {
                     </select>
                 <br /><?php //_e('') ?></td>
             </tr>
-            <tr valign="top"> 
-                <th width="33%" scope="row"><?php _e('Listing Per Page') ?></th> 
+            <tr valign="top">
+                <th width="33%" scope="row"><?php _e('Listing Per Page') ?></th>
                 <td>
 				<select name="members_directory_per_page" id="members_directory_per_page">
 				   <option value="5" <?php if ( $members_directory_per_page == '5' ) { echo 'selected="selected"'; } ?> ><?php _e('5'); ?></option>
@@ -100,26 +100,26 @@ function members_directory_site_admin_options() {
 				</select>
                 <br /><?php //_e('') ?></td>
             </tr>
-            <tr valign="top"> 
-                <th width="33%" scope="row"><?php _e('Background Color') ?></th> 
+            <tr valign="top">
+                <th width="33%" scope="row"><?php _e('Background Color') ?></th>
                 <td><input name="members_directory_background_color" type="text" id="members_directory_background_color" value="<?php echo $members_directory_background_color; ?>" size="20" />
                 <br /><?php _e('Default') ?>: #F2F2EA</td>
             </tr>
-            <tr valign="top"> 
-                <th width="33%" scope="row"><?php _e('Alternate Background Color') ?></th> 
+            <tr valign="top">
+                <th width="33%" scope="row"><?php _e('Alternate Background Color') ?></th>
                 <td><input name="members_directory_alternate_background_color" type="text" id="members_directory_alternate_background_color" value="<?php echo $members_directory_alternate_background_color; ?>" size="20" />
                 <br /><?php _e('Default') ?>: #FFFFFF</td>
             </tr>
-            <tr valign="top"> 
-                <th width="33%" scope="row"><?php _e('Border Color') ?></th> 
+            <tr valign="top">
+                <th width="33%" scope="row"><?php _e('Border Color') ?></th>
                 <td><input name="members_directory_border_color" type="text" id="members_directory_border_color" value="<?php echo $members_directory_border_color; ?>" size="20" />
                 <br /><?php _e('Default') ?>: #CFD0CB</td>
             </tr>
             <?php
             if ( function_exists('post_indexer_make_current') ) {
 			?>
-            <tr valign="top"> 
-                <th width="33%" scope="row"><?php _e('Profile: Show Posts') ?></th> 
+            <tr valign="top">
+                <th width="33%" scope="row"><?php _e('Profile: Show Posts') ?></th>
                 <td>
 				<select name="members_directory_profile_show_posts" id="members_directory_profile_show_posts">
 				   <option value="yes" <?php if ( $members_directory_profile_show_posts == 'yes' ) { echo 'selected="selected"'; } ?> ><?php _e('Yes'); ?></option>
@@ -131,8 +131,8 @@ function members_directory_site_admin_options() {
 			}
             if ( function_exists('comment_indexer_make_current') ) {
 			?>
-            <tr valign="top"> 
-                <th width="33%" scope="row"><?php _e('Profile: Show Comments') ?></th> 
+            <tr valign="top">
+                <th width="33%" scope="row"><?php _e('Profile: Show Comments') ?></th>
                 <td>
 				<select name="members_directory_profile_show_comments" id="members_directory_profile_show_comments">
 				   <option value="yes" <?php if ( $members_directory_profile_show_comments == 'yes' ) { echo 'selected="selected"'; } ?> ><?php _e('Yes'); ?></option>
@@ -144,8 +144,8 @@ function members_directory_site_admin_options() {
 			}
 			if ( function_exists('friends_make_current') ) {
 			?>
-            <tr valign="top"> 
-                <th width="33%" scope="row"><?php _e('Profile: Show Friends') ?></th> 
+            <tr valign="top">
+                <th width="33%" scope="row"><?php _e('Profile: Show Friends') ?></th>
                 <td>
 				<select name="members_directory_profile_show_friends" id="members_directory_profile_show_friends">
 				   <option value="yes" <?php if ( $members_directory_profile_show_friends == 'yes' ) { echo 'selected="selected"'; } ?> ><?php _e('Yes'); ?></option>
@@ -202,14 +202,22 @@ function members_directory_url_parse(){
 	$members_directory_url = rtrim($members_directory_url, "/");
 	$members_directory_url = ltrim($members_directory_url, $members_directory_base);
 	$members_directory_url = ltrim($members_directory_url, "/");
-	
-	list($members_directory_1, $members_directory_2, $members_directory_3, $members_directory_4) = explode("/", $members_directory_url);
+
+	$members_directory_1 = $members_directory_2 = $members_directory_3 = $members_directory_4 = '';
+	if( !empty( $members_directory_url ) ) {
+		$members_directory_array = explode("/", $members_directory_url);
+		for( $i = 1, $j = count( $members_directory_array ); $i <= $j ; $i++ ) {
+			$members_directory_var = "members_directory_$i";
+			${$members_directory_var} = $members_directory_array[$i-1];
+		}
+	}
 
 	$page_type = '';
 	$page_subtype = '';
 	$page = '';
 	$user = '';
-	
+	$phrase = '';
+
 	if ( empty( $members_directory_1 ) || is_numeric( $members_directory_1 ) ) {
 		//landing
 		$page_type = 'landing';
@@ -258,12 +266,12 @@ function members_directory_url_parse(){
 			$user = $members_directory_1;
 		}
 	}
-	
+
 	$members_directory['page_type'] = $page_type;
 	$members_directory['page'] = $page;
 	$members_directory['user'] = $user;
 	$members_directory['phrase'] = $phrase;
-	
+
 	return $members_directory;
 }
 
@@ -273,51 +281,51 @@ function members_directory_url_parse(){
 
 function members_directory_title_output($title, $post_ID = '') {
 	global $wpdb, $current_site, $post, $members_directory_base;
-	if ( $post->post_name == $members_directory_base && $post_ID == $post->ID) {
+	if ( in_the_loop() && $post->post_name == $members_directory_base && $post_ID == $post->ID) {
 		$members_directory = members_directory_url_parse();
 		if ( $members_directory['page_type'] == 'landing' ) {
 			if ( $members_directory['page'] > 1 ) {
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; ' . '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['page'] . '/">' . $members_directory['page'] . '</a>';
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['page'] . '/">' . $members_directory['page'] . '</a>';
 			} else {
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a>';
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a>';
 			}
 		} else if ( $members_directory['page_type'] == 'search' ) {
 			if ( $members_directory['page'] > 1 ) {
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/search/">' . __('Search') . '</a> &raquo; ' . '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/search/' . urlencode($members_directory['phrase']) .  '/' . $members_directory['page'] . '/">' . $members_directory['page'] . '</a>';
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/search/">' . __('Search') . '</a> &raquo; ' . '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/search/' . urlencode($members_directory['phrase']) .  '/' . $members_directory['page'] . '/">' . $members_directory['page'] . '</a>';
 			} else {
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/search/">' . __('Search') . '</a>';
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/search/">' . __('Search') . '</a>';
 			}
 		} else if ( $members_directory['page_type'] == 'user' ) {
 			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
 			if ( $user_count > 0 ) {
 				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a>';
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a>';
 			} else {
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; ' . __('Invalid User');
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . __('Invalid User');
 			}
 		} else if ( $members_directory['page_type'] == 'user_posts' ) {
 			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
 			if ( $user_count > 0 ) {
 				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/posts/">' . __('Posts') . '</a>';
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/posts/">' . __('Posts') . '</a>';
 			} else {
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; ' . __('Invalid User');
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . __('Invalid User');
 			}
 		} else if ( $members_directory['page_type'] == 'user_comments' ) {
 			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
 			if ( $user_count > 0 ) {
 				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/comments/">' . __('Comments') . '</a>';
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/comments/">' . __('Comments') . '</a>';
 			} else {
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; ' . __('Invalid User');
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . __('Invalid User');
 			}
 		} else if ( $members_directory['page_type'] == 'user_friends' ) {
 			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
 			if ( $user_count > 0 ) {
 				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/friends/">' . __('Friends') . '</a>';
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/friends/">' . __('Friends') . '</a>';
 			} else {
-				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . __('Members') . '</a> &raquo; ' . __('Invalid User');
+				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . __('Invalid User');
 			}
 		}
 	}
@@ -346,7 +354,7 @@ function members_directory_output($content) {
 			$content .= '<table border="0" border="0" cellpadding="2px" cellspacing="2px" width="100%" bgcolor="">';
 				$content .= '<tr>';
 					$content .= '<td style="background-color:' . $members_directory_background_color . '; border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px; font-size:12px;" width="10%"> </td>';
-					$content .= '<td style="background-color:' . $members_directory_background_color . '; border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px; font-size:12px;" width="90%"><center><strong>' .  __('Members') . '</strong></center></td>';
+					$content .= '<td style="background-color:' . $members_directory_background_color . '; border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px; font-size:12px;" width="90%"><center><strong>' .  $post->post_title . '</strong></center></td>';
 				$content .= '</tr>';
 				//=================================//
 				$avatar_default = get_option('avatar_default');
@@ -359,7 +367,7 @@ function members_directory_output($content) {
 					$math = $members_directory_per_page * $math;
 					$start = $math;
 				}
-				
+
 				$query = "SELECT * FROM " . $wpdb->base_prefix . "users WHERE spam != 1 AND deleted != 1";
 				if ( $members_directory_sort_by == 'alphabetically' ) {
 					$query .= " ORDER BY user_login ASC";
@@ -426,7 +434,7 @@ function members_directory_output($content) {
 			$content .= '<table border="0" border="0" cellpadding="2px" cellspacing="2px" width="100%" bgcolor="">';
 				$content .= '<tr>';
 					$content .= '<td style="background-color:' . $members_directory_background_color . '; border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px; font-size:12px;" width="10%"> </td>';
-					$content .= '<td style="background-color:' . $members_directory_background_color . '; border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px; font-size:12px;" width="90%"><center><strong>' .  __('Members') . '</strong></center></td>';
+					$content .= '<td style="background-color:' . $members_directory_background_color . '; border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px; font-size:12px;" width="90%"><center><strong>' .  $post->post_title . '</strong></center></td>';
 				$content .= '</tr>';
 				//=================================//
 				$avatar_default = get_option('avatar_default');
@@ -850,7 +858,7 @@ function members_directory_user_posts_navigation_output($content, $per_page, $pa
 	global $wpdb, $current_site, $members_directory_base;
 	$post_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "site_posts WHERE post_author = '" . $user_id . "' ORDER BY site_post_id DESC");
 	$post_count = $post_count - 1;
-	
+
 	//generate page div
 	//============================================================================//
 	$total_pages = members_directory_roundup($post_count / $per_page, 0);
@@ -864,7 +872,7 @@ function members_directory_user_posts_navigation_output($content, $per_page, $pa
 	} else {
 		$showing_high = $page * $per_page;
 	}
-	
+
     $content .= '<td style="font-size:12px; text-align:left;" width="50%">';
 	if ($post_count > $per_page){
 	//============================================================================//
@@ -875,7 +883,7 @@ function members_directory_user_posts_navigation_output($content, $per_page, $pa
 		$content .= '<a style="text-decoration:none;" href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $user_nicename . '/posts/' . $previous_page . '/">&laquo; ' . __('Previous') . '</a>';
 		}
 	//============================================================================//
-	}	
+	}
 	$content .= '</td>';
     $content .= '<td style="font-size:12px; text-align:right;" width="50%">';
 	if ($post_count > $per_page){
@@ -904,7 +912,7 @@ function members_directory_user_comments_navigation_output($content, $per_page, 
 	global $wpdb, $current_site, $members_directory_base;
 	$comment_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "site_comments WHERE comment_author_user_id = '" . $user_id . "' ORDER BY site_comment_id DESC");
 	$comment_count = $comment_count - 1;
-	
+
 	//generate page div
 	//============================================================================//
 	$total_pages = members_directory_roundup($comment_count / $per_page, 0);
@@ -918,7 +926,7 @@ function members_directory_user_comments_navigation_output($content, $per_page, 
 	} else {
 		$showing_high = $page * $per_page;
 	}
-	
+
     $content .= '<td style="font-size:12px; text-align:left;" width="50%">';
 	if ($comment_count > $per_page){
 	//============================================================================//
@@ -929,7 +937,7 @@ function members_directory_user_comments_navigation_output($content, $per_page, 
 		$content .= '<a style="text-decoration:none;" href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $user_nicename . '/comments/' . $previous_page . '/">&laquo; ' . __('Previous') . '</a>';
 		}
 	//============================================================================//
-	}	
+	}
 	$content .= '</td>';
     $content .= '<td style="font-size:12px; text-align:right;" width="50%">';
 	if ($comment_count > $per_page){
@@ -977,9 +985,9 @@ function members_directory_search_form_output($content, $phrase) {
 
 function members_directory_search_navigation_output($content, $per_page, $page, $phrase, $next){
 	global $wpdb, $current_site, $members_directory_base;
-	$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE ( user_login LIKE '%" . $members_directory['phrase'] . "%' OR display_name LIKE '%" . $members_directory['phrase'] . "%' ) AND spam != 1 AND deleted != 1");
+	$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE ( user_login LIKE '%" . $phrase . "%' OR display_name LIKE '%" . $phrase . "%' ) AND spam != 1 AND deleted != 1");
 	$user_count = $user_count - 1;
-	
+
 	//generate page div
 	//============================================================================//
 	$total_pages = members_directory_roundup($user_count / $per_page, 0);
@@ -993,7 +1001,7 @@ function members_directory_search_navigation_output($content, $per_page, $page, 
 	} else {
 		$showing_high = $page * $per_page;
 	}
-	
+
     $content .= '<td style="font-size:12px; text-align:left;" width="50%">';
 	if ($user_count > $per_page){
 	//============================================================================//
@@ -1004,7 +1012,7 @@ function members_directory_search_navigation_output($content, $per_page, $page, 
 		$content .= '<a style="text-decoration:none;" href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/search/' . urlencode( $phrase ) . '/' . $previous_page . '/">&laquo; ' . __('Previous') . '</a>';
 		}
 	//============================================================================//
-	}	
+	}
 	$content .= '</td>';
     $content .= '<td style="font-size:12px; text-align:right;" width="50%">';
 	if ($user_count > $per_page){
@@ -1032,7 +1040,7 @@ function members_directory_search_navigation_output($content, $per_page, $page, 
 function members_directory_landing_navigation_output($content, $per_page, $page){
 	global $wpdb, $current_site, $members_directory_base;
 	$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE spam != 1 AND deleted != 1");
-	
+
 	//generate page div
 	//============================================================================//
 	$total_pages = members_directory_roundup($user_count / $per_page, 0);
@@ -1046,7 +1054,7 @@ function members_directory_landing_navigation_output($content, $per_page, $page)
 	} else {
 		$showing_high = $page * $per_page;
 	}
-	
+
     $content .= '<td style="font-size:12px; text-align:left;" width="50%">';
 	if ($user_count > $per_page){
 	//============================================================================//
@@ -1057,7 +1065,7 @@ function members_directory_landing_navigation_output($content, $per_page, $page)
 		$content .= '<a style="text-decoration:none;" href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $previous_page . '/">&laquo; ' . __('Previous') . '</a>';
 		}
 	//============================================================================//
-	}	
+	}
 	$content .= '</td>';
     $content .= '<td style="font-size:12px; text-align:right;" width="50%">';
 	if ($user_count > $per_page){
