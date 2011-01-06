@@ -1,40 +1,32 @@
-Plugin Name: Members Directory
-Author: Andrew Billits & Ulrich Sossou
+=== Members Directory ===
+Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub)
 
-Change Log:
-----------------------------------------------------------------------
-----------------------------------------------------------------------
+== Changelog ==
 
-1.0.6 - 10/18/2010
-----------------------------------------------------------------------
-- Fixed bug with members search.
-- Fixed broken menu item.
-- Fixed php errors.
+= 1.0.7 =
+* Compatibility update for WordPress 3.1
+* Update Notifications script added
+* Bug fixes.
 
-1.0.5 - 12/04/2009
-----------------------------------------------------------------------
-- Better compatibility with directory installs.
+= 1.0.6 =
+* Fixed bug with members search.
+* Fixed broken menu item.
+* Fixed php errors.
 
-1.0.5 - 12/04/2009
-----------------------------------------------------------------------
-- Better compatibility with directory installs.
+= 1.0.5 =
+* Better compatibility with directory installs.
 
-1.0.4 - 12/03/2009
-----------------------------------------------------------------------
-- Better compatibility with directory installs.
+= 1.0.4 =
+* Better compatibility with directory installs.
 
-1.0.3 - 11/12/2009
-----------------------------------------------------------------------
-- Fixed "invalid page" issue
+= 1.0.3 =
+* Fixed "invalid page" issue
 
-1.0.2 - 11/06/2009
-----------------------------------------------------------------------
-- Fixed search page
+= 1.0.2 =
+* Fixed search page
 
-1.0.1 - 09/28/2009
-----------------------------------------------------------------------
-- Now compatible with sites installed in a directory.
+= 1.0.1 =
+* Now compatible with sites installed in a directory.
 
-1.0.0 - 08/10/2009
-----------------------------------------------------------------------
-- Initial Release.
+= 1.0.0 =
+* Initial Release

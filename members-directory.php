@@ -3,13 +3,15 @@
 Plugin Name: Members Directory
 Plugin URI: http://premium.wpmudev.org/project/members-directory
 Description: Provides an automatic list of all the users on your site, with avatars, pagination, a built in search facility and extended customizable user profiles
-Author: Andrew Billits & Ulrich Sossou (Incsub)
-Version: 1.0.6
-Author URI:
+Author: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub)
+Author URI: http://ivan.sh
+Version: 1.0.7
+Network: true
+WDP ID: 100
 */
 
 /*
-Copyright 2007-2009 Incsub (http://incsub.com)
+Copyright 2007-2011 Incsub (http://incsub.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License (Version 2 - GPLv2) as published by
@@ -37,8 +39,7 @@ $members_directory_base = 'members'; //domain.tld/BASE/ Ex: domain.tld/user/
 
 if ($current_blog->domain . $current_blog->path == $current_site->domain . $current_site->path){
 	add_filter('generate_rewrite_rules','members_directory_rewrite');
-	$members_directory_wp_rewrite = new WP_Rewrite;
-	$members_directory_wp_rewrite->flush_rules();
+    add_action('init', 'members_directory_flush_rewrite_rules');
 	add_filter('the_content', 'members_directory_output', 20);
 	add_filter('the_title', 'members_directory_title_output', 99, 2);
 	add_action('admin_footer', 'members_directory_page_setup');
@@ -50,6 +51,11 @@ add_action('update_wpmu_options', 'members_directory_site_admin_options_process'
 //------------------------------------------------------------------------//
 //---Functions------------------------------------------------------------//
 //------------------------------------------------------------------------//
+
+function members_directory_flush_rewrite_rules() {
+	$members_directory_wp_rewrite = new WP_Rewrite;
+	$members_directory_wp_rewrite->flush_rules();
+}
 
 function members_directory_page_setup() {
 	global $wpdb, $user_ID, $members_directory_base;
@@ -161,7 +167,6 @@ function members_directory_site_admin_options() {
 }
 
 function members_directory_site_admin_options_process() {
-
 	update_site_option( 'members_directory_sort_by' , $_POST['members_directory_sort_by']);
 	update_site_option( 'members_directory_per_page' , $_POST['members_directory_per_page']);
 	update_site_option( 'members_directory_background_color' , trim( $_POST['members_directory_background_color'] ));
@@ -478,8 +483,8 @@ function members_directory_output($content) {
 			if ( $user_count > 0 ) {
 				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
 				$blog_details = get_active_blog_for_user( $user_details->ID );
-				$user_bio = get_usermeta( $user_details->ID, "description" );
-				$user_name = get_usermeta( $user_details->ID, "first_name" ) . ' ' . get_usermeta( $user_details->ID, "last_name" );
+				$user_bio = get_user_meta( $user_details->ID, "description", true );
+				$user_name = get_user_meta( $user_details->ID, "first_name", true ) . ' ' . get_user_meta( $user_details->ID, "last_name", true );
 				$user_website = $user_details->user_url;
 				$content .= '<div style="float:left; width:100%; margin-bottom:20px;">';
 				$content .= '<table border="0" border="0" cellpadding="2px" cellspacing="2px" width="100%" bgcolor="">';
@@ -1099,5 +1104,15 @@ function members_directory_landing_navigation_output($content, $per_page, $page)
 function members_directory_roundup($value, $dp){
     return ceil($value*pow(10, $dp))/pow(10, $dp);
 }
+
+/* Update Notifications Notice */
+if ( !function_exists( 'wdp_un_check' ) ):
+function wdp_un_check() {
+    if ( !class_exists('WPMUDEV_Update_Notifications') && current_user_can('edit_users') )
+        echo '<div class="error fade"><p>' . __('Please install the latest version of <a href="http://premium.wpmudev.org/project/update-notifications/" title="Download Now &raquo;">our free Update Notifications plugin</a> which helps you stay up-to-date with the most stable, secure versions of WPMU DEV themes and plugins. <a href="http://premium.wpmudev.org/wpmu-dev/update-notifications-plugin-information/">More information &raquo;</a>', 'wpmudev') . '</a></p></div>';
+}
+add_action( 'admin_notices', 'wdp_un_check', 5 );
+add_action( 'network_admin_notices', 'wdp_un_check', 5 );
+endif;
 
 ?>
