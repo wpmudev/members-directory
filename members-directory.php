@@ -5,7 +5,7 @@ Plugin URI: http://premium.wpmudev.org/project/members-directory
 Description: Provides an automatic list of all the users on your site, with avatars, pagination, a built in search facility and extended customizable user profiles
 Author: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub)
 Author URI: http://ivan.sh
-Version: 1.0.7
+Version: 1.0.8
 Network: true
 WDP ID: 100
 */
@@ -37,9 +37,10 @@ $members_directory_base = 'members'; //domain.tld/BASE/ Ex: domain.tld/user/
 //---Hook-----------------------------------------------------------------//
 //------------------------------------------------------------------------//
 
-if ($current_blog->domain . $current_blog->path == $current_site->domain . $current_site->path){
+register_activation_hook( __FILE__, 'flush_rewrite_rules' );
+
+if ( $current_blog->domain . $current_blog->path == $current_site->domain . $current_site->path ){
 	add_filter('generate_rewrite_rules','members_directory_rewrite');
-    add_action('init', 'members_directory_flush_rewrite_rules');
 	add_filter('the_content', 'members_directory_output', 20);
 	add_filter('the_title', 'members_directory_title_output', 99, 2);
 	add_action('admin_footer', 'members_directory_page_setup');
@@ -51,11 +52,6 @@ add_action('update_wpmu_options', 'members_directory_site_admin_options_process'
 //------------------------------------------------------------------------//
 //---Functions------------------------------------------------------------//
 //------------------------------------------------------------------------//
-
-function members_directory_flush_rewrite_rules() {
-	$members_directory_wp_rewrite = new WP_Rewrite;
-	$members_directory_wp_rewrite->flush_rules();
-}
 
 function members_directory_page_setup() {
 	global $wpdb, $user_ID, $members_directory_base;
