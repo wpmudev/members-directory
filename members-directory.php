@@ -5,7 +5,7 @@ Plugin URI: http://premium.wpmudev.org/project/members-directory
 Description: Provides an automatic list of all the users on your site, with avatars, pagination, a built in search facility and extended customizable user profiles
 Author: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub)
 Author URI: http://ivan.sh
-Version: 1.0.8
+Version: 1.0.9
 Network: true
 WDP ID: 100
 */
@@ -55,7 +55,7 @@ add_action('update_wpmu_options', 'members_directory_site_admin_options_process'
 
 function members_directory_page_setup() {
 	global $wpdb, $user_ID, $members_directory_base;
-	if ( get_site_option('members_directory_page_setup') != 'complete' && is_site_admin() ) {
+	if ( get_site_option('members_directory_page_setup') != 'complete' && is_super_admin() ) {
 		$page_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->posts . " WHERE post_name = '" . $members_directory_base . "' AND post_type = 'page'");
 		if ( $page_count < 1 ) {
 			$wpdb->query( "INSERT INTO " . $wpdb->posts . " ( post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, ping_status, post_password, post_name, to_ping, pinged, post_modified, post_modified_gmt, post_content_filtered, post_parent, guid, menu_order, post_type, post_mime_type, comment_count ) VALUES ( '" . $user_ID . "', '" . current_time( 'mysql' ) . "', '" . current_time( 'mysql' ) . "', '', '" . __('Members') . "', '', 'publish', 'closed', 'closed', '', '" . $members_directory_base . "', '', '', '" . current_time( 'mysql' ) . "', '" . current_time( 'mysql' ) . "', '', 0, '', 0, 'page', '', 0 )" );

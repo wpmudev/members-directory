@@ -3,6 +3,9 @@ Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub)
 
 == Changelog ==
 
+= 1.0.9 =
+* is_site_admin => is_super_admin
+
 = 1.0.7 =
 * Compatibility update for WordPress 3.1
 * Update Notifications script added
