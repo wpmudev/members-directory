@@ -5,7 +5,7 @@ Plugin URI: http://premium.wpmudev.org/project/members-directory
 Description: Provides an automatic list of all the users on your site, with avatars, pagination, a built in search facility and extended customizable user profiles
 Author: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub)
 Author URI: http://ivan.sh
-Version: 1.0.9
+Version: 1.0.8.1
 Network: true
 WDP ID: 100
 */
