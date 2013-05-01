@@ -1,7 +1,10 @@
 === Members Directory ===
-Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub)
+Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Maniu (Incsub)
 
 == Changelog ==
+
+= 1.0.8.2 =
+* security improvements
 
 = 1.0.8.1 =
 * is_site_admin => is_super_admin
