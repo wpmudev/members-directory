@@ -3,7 +3,7 @@
 Plugin Name: Members Directory
 Plugin URI: http://premium.wpmudev.org/project/members-directory
 Description: Provides an automatic list of all the users on your site, with avatars, pagination, a built in search facility and extended customizable user profiles
-Author: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub)
+Author: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Mariusz Misiek (Incsib)
 Author URI: http://ivan.sh
 Version: 1.0.8.1
 Network: true
@@ -39,7 +39,9 @@ $members_directory_base = 'members'; //domain.tld/BASE/ Ex: domain.tld/user/
 
 register_activation_hook( __FILE__, 'flush_rewrite_rules' );
 
-if ( $current_blog->domain . $current_blog->path == $current_site->domain . $current_site->path ){
+//TODO move it into action
+global $current_blog, $current_site;
+if ( isset($current_blog) && isset($current_site) && $current_blog->domain . $current_blog->path == $current_site->domain . $current_site->path ){
 	add_filter('generate_rewrite_rules','members_directory_rewrite');
 	add_filter('the_content', 'members_directory_output', 20);
 	add_filter('the_title', 'members_directory_title_output', 99, 2);
@@ -56,9 +58,9 @@ add_action('update_wpmu_options', 'members_directory_site_admin_options_process'
 function members_directory_page_setup() {
 	global $wpdb, $user_ID, $members_directory_base;
 	if ( get_site_option('members_directory_page_setup') != 'complete' && is_super_admin() ) {
-		$page_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->posts . " WHERE post_name = '" . $members_directory_base . "' AND post_type = 'page'");
+		$page_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->posts . " WHERE post_name = %s AND post_type = 'page'", $members_directory_base));
 		if ( $page_count < 1 ) {
-			$wpdb->query( "INSERT INTO " . $wpdb->posts . " ( post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, ping_status, post_password, post_name, to_ping, pinged, post_modified, post_modified_gmt, post_content_filtered, post_parent, guid, menu_order, post_type, post_mime_type, comment_count ) VALUES ( '" . $user_ID . "', '" . current_time( 'mysql' ) . "', '" . current_time( 'mysql' ) . "', '', '" . __('Members') . "', '', 'publish', 'closed', 'closed', '', '" . $members_directory_base . "', '', '', '" . current_time( 'mysql' ) . "', '" . current_time( 'mysql' ) . "', '', 0, '', 0, 'page', '', 0 )" );
+			$wpdb->query( $wpdb->prepare("INSERT INTO " . $wpdb->posts . " ( post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, ping_status, post_password, post_name, to_ping, pinged, post_modified, post_modified_gmt, post_content_filtered, post_parent, guid, menu_order, post_type, post_mime_type, comment_count ) VALUES ( %d, '" . current_time( 'mysql' ) . "', '" . current_time( 'mysql' ) . "', '', %s, '', 'publish', 'closed', 'closed', '', %s, '', '', '" . current_time( 'mysql' ) . "', '" . current_time( 'mysql' ) . "', '', 0, '', 0, 'page', '', 0 )", $user_ID, __('Members'), $members_directory_base ));
 		}
 		update_site_option('members_directory_page_setup', 'complete');
 	}
@@ -104,17 +106,17 @@ function members_directory_site_admin_options() {
             </tr>
             <tr valign="top">
                 <th width="33%" scope="row"><?php _e('Background Color') ?></th>
-                <td><input name="members_directory_background_color" type="text" id="members_directory_background_color" value="<?php echo $members_directory_background_color; ?>" size="20" />
+                <td><input name="members_directory_background_color" type="text" id="members_directory_background_color" value="<?php echo esc_attr($members_directory_background_color); ?>" size="20" />
                 <br /><?php _e('Default') ?>: #F2F2EA</td>
             </tr>
             <tr valign="top">
                 <th width="33%" scope="row"><?php _e('Alternate Background Color') ?></th>
-                <td><input name="members_directory_alternate_background_color" type="text" id="members_directory_alternate_background_color" value="<?php echo $members_directory_alternate_background_color; ?>" size="20" />
+                <td><input name="members_directory_alternate_background_color" type="text" id="members_directory_alternate_background_color" value="<?php echo esc_attr($members_directory_alternate_background_color); ?>" size="20" />
                 <br /><?php _e('Default') ?>: #FFFFFF</td>
             </tr>
             <tr valign="top">
                 <th width="33%" scope="row"><?php _e('Border Color') ?></th>
-                <td><input name="members_directory_border_color" type="text" id="members_directory_border_color" value="<?php echo $members_directory_border_color; ?>" size="20" />
+                <td><input name="members_directory_border_color" type="text" id="members_directory_border_color" value="<?php echo esc_attr($members_directory_border_color); ?>" size="20" />
                 <br /><?php _e('Default') ?>: #CFD0CB</td>
             </tr>
             <?php
@@ -297,33 +299,33 @@ function members_directory_title_output($title, $post_ID = '') {
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/search/">' . __('Search') . '</a>';
 			}
 		} else if ( $members_directory['page_type'] == 'user' ) {
-			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
+			$user_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s AND spam != 1 AND deleted != 1", $members_directory['user'] ));
 			if ( $user_count > 0 ) {
-				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
+				$user_details = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s", $members_directory['user']));
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a>';
 			} else {
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . __('Invalid User');
 			}
 		} else if ( $members_directory['page_type'] == 'user_posts' ) {
-			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
+			$user_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s AND spam != 1 AND deleted != 1", $members_directory['user']));
 			if ( $user_count > 0 ) {
-				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
+				$user_details = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s", $members_directory['user']));
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/posts/">' . __('Posts') . '</a>';
 			} else {
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . __('Invalid User');
 			}
 		} else if ( $members_directory['page_type'] == 'user_comments' ) {
-			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
+			$user_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s AND spam != 1 AND deleted != 1", $members_directory['user']));
 			if ( $user_count > 0 ) {
-				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
+				$user_details = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s", $members_directory['user'] ));
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/comments/">' . __('Comments') . '</a>';
 			} else {
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . __('Invalid User');
 			}
 		} else if ( $members_directory['page_type'] == 'user_friends' ) {
-			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
+			$user_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s AND spam != 1 AND deleted != 1", $members_directory['user'] ));
 			if ( $user_count > 0 ) {
-				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
+				$user_details = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s", $members_directory['user'] ));
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/">' . ucfirst($user_details->display_name) . '</a> &raquo; <a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/friends/">' . __('Friends') . '</a>';
 			} else {
 				$title = '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/">' . $post->post_title . '</a> &raquo; ' . __('Invalid User');
@@ -411,10 +413,10 @@ function members_directory_output($content) {
 				$math = $members_directory_per_page * $math;
 				$start = $math;
 			}
-			$query = "SELECT * FROM " . $wpdb->base_prefix . "users WHERE ( user_login LIKE '%" . $members_directory['phrase'] . "%' OR display_name LIKE '%" . $members_directory['phrase'] . "%' ) AND spam != 1 AND deleted != 1";
-			$query .= " LIMIT " . intval( $start ) . ", " . intval( $members_directory_per_page );
+			//TODO MAKE SURE IT WORKS
+			//$query = "SELECT * FROM " . $wpdb->base_prefix . "users WHERE ( user_login LIKE '%" . $members_directory['phrase'] . "%' OR display_name LIKE '%" . $members_directory['phrase'] . "%' ) AND spam != 1 AND deleted != 1 LIMIT " . intval( $start ) . ", " . intval( $members_directory_per_page );
 			if ( !empty( $members_directory['phrase'] ) ) {
-				$users = $wpdb->get_results( $query, ARRAY_A );
+				$users = $wpdb->get_results( $wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE ( user_login LIKE %s OR display_name LIKE %s ) AND spam != 1 AND deleted != 1 LIMIT %d, %d", '%'.$members_directory['phrase'].'%', '%'.$members_directory['phrase'].'%', intval( $start ), intval( $members_directory_per_page ) ), ARRAY_A );
 			}
 			//=====================================//
 			$search_form_content = members_directory_search_form_output('', $members_directory['phrase']);
@@ -475,9 +477,9 @@ function members_directory_output($content) {
 				$content .= $navigation_content;
 			}
 		} else if ( $members_directory['page_type'] == 'user' ) {
-			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
+			$user_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s AND spam != 1 AND deleted != 1", $members_directory['user']));
 			if ( $user_count > 0 ) {
-				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
+				$user_details = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s", $members_directory['user']));
 				$blog_details = get_active_blog_for_user( $user_details->ID );
 				$user_bio = get_user_meta( $user_details->ID, "description", true );
 				$user_name = get_user_meta( $user_details->ID, "first_name", true ) . ' ' . get_user_meta( $user_details->ID, "last_name", true );
@@ -504,14 +506,14 @@ function members_directory_output($content) {
 								$friend_added = 'yes';
 							}
 							if ( $friends_enable_approval == '1' ) {
-								$friend_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "friends WHERE user_ID = '" . $user_details->ID . "' AND friend_approved = '1'");
+								$friend_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "friends WHERE user_ID = %d AND friend_approved = '1'", $user_details->ID));
 							} else {
-								$friend_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "friends WHERE user_ID = '" . $user_details->ID . "'");
+								$friend_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "friends WHERE user_ID = %d", $user_details->ID));
 							}
 							if ( $friends_enable_approval == '1' ) {
-								$query = "SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = '" . $user_details->ID . "' AND friend_approved = '1' ORDER BY RAND() LIMIT 6";
+								$query = $wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = %d AND friend_approved = '1' ORDER BY RAND() LIMIT 6", $user_details->ID);
 							} else {
-								$query = "SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = '" . $user_details->ID . "' ORDER BY RAND() LIMIT 6";
+								$query = $wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = %d ORDER BY RAND() LIMIT 6", $user_details->ID);
 							}
 							$friends = $wpdb->get_results( $query, ARRAY_A );
 							if ( $friend_count > 0 ) {
@@ -523,8 +525,8 @@ function members_directory_output($content) {
 								$content .= '<div style="width:96px;padding:3px; background-color:' . $members_directory_background_color . '; border-style:solid; border-color:' . $members_directory_border_color . '; border-width:1px;">';
 								foreach ($friends as $friend){
 									//$friend_blog_details = get_active_blog_for_user( $friend['friend_user_ID'] );
-									$friend_display_name = $wpdb->get_var("SELECT display_name FROM " . $wpdb->users . " WHERE ID = '" . $friend['friend_user_ID'] . "'");
-									$friend_nicename = $wpdb->get_var("SELECT display_name FROM " . $wpdb->users . " WHERE ID = '" . $friend['friend_user_ID'] . "'");
+									$friend_display_name = $wpdb->get_var($wpdb->prepare("SELECT display_name FROM " . $wpdb->users . " WHERE ID = %d", $friend['friend_user_ID'] ));
+									$friend_nicename = $wpdb->get_var($wpdb->prepare("SELECT display_name FROM " . $wpdb->users . " WHERE ID = %d", $friend['friend_user_ID'] ));
 									$content .= '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $friend_nicename . '/" style="padding:0px;margin:0px;text-decoration:none;border:0px;">' .  get_avatar($friend['friend_user_ID'], 48, get_option('avatar_default')) . '</a>';
 								}
 								if ( $friend_count > 6 ) {
@@ -535,14 +537,14 @@ function members_directory_output($content) {
 								$content .= '<br />';
 							}
 							if ( !empty( $user_ID ) ) {
-								$friend_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "friends WHERE friend_user_ID = '" . $user_details->ID . "' AND user_ID = '" . $user_ID . "'");
+								$friend_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "friends WHERE friend_user_ID = %d AND user_ID = %d", $user_details->ID, $user_ID));
 								if ( count( $friends  ) < 1 ) {
 									$content .= '<br />';
 								}
 								$content .= '<form name="add_friend" method="POST">';
 								$content .= '<input type="hidden" name="action" value="members_directory_process_friend" />';
-								$content .= '<input type="hidden" name="user_id" value="' . $user_ID . '" />';
-								$content .= '<input type="hidden" name="friend_user_id" value="' . $user_details->ID . '" />';
+								$content .= '<input type="hidden" name="user_id" value="' . esc_attr($user_ID) . '" />';
+								$content .= '<input type="hidden" name="friend_user_id" value="' . esc_attr($user_details->ID) . '" />';
 								$content .= '<center>';
 								if ( $friend_count > 0 || $user_ID == $user_details->ID || $friend_added == 'yes' ) {
 									$content .= '<input disabled="disabled" type="submit" name="Submit" value="' . __('Add Friend') . '" />';
@@ -578,7 +580,7 @@ function members_directory_output($content) {
 				if ( $members_directory_profile_show_posts == 'yes' && function_exists('post_indexer_make_current') ) {
 					$content .= '<h3 style="border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px;">' . __('Recent Posts') . ' (<a style="text-decoration:none;" href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/posts/">' . __('All Posts') . '</a>)</h3>';
 					//===============================================//
-					$query = "SELECT * FROM " . $wpdb->base_prefix . "site_posts WHERE post_author = '" . $user_details->ID . "' ORDER BY site_post_id DESC LIMIT 5";
+					$query = $wpdb->prepare( "SELECT * FROM " . $wpdb->base_prefix . "site_posts WHERE post_author = %d ORDER BY site_post_id DESC LIMIT 5", $user_details->ID);
 					$posts = $wpdb->get_results( $query, ARRAY_A );
 					//=====================================//
 					if ( count( $posts ) > 0 ) {
@@ -625,7 +627,7 @@ function members_directory_output($content) {
 				if ( $members_directory_profile_show_comments == 'yes' && function_exists('comment_indexer_make_current') ) {
 					$content .= '<h3 style="border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px;">' . __('Recent Comments') . ' (<a style="text-decoration:none;" href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/comments/">' . __('All Comments') . '</a>)</h3>';
 					//===============================================//
-					$query = "SELECT * FROM " . $wpdb->base_prefix . "site_comments WHERE comment_author_user_id = '" . $user_details->ID . "' ORDER BY site_comment_id DESC LIMIT 5";
+					$query = $wpdb->prepare( "SELECT * FROM " . $wpdb->base_prefix . "site_comments WHERE comment_author_user_id = %d ORDER BY site_comment_id DESC LIMIT 5", $user_details->ID);
 					$comments = $wpdb->get_results( $query, ARRAY_A );
 					//=====================================//
 					if ( count( $comments ) > 0 ) {
@@ -672,9 +674,9 @@ function members_directory_output($content) {
 				$content .= __('Member not found.');
 			}
 		} else if ( $members_directory['page_type'] == 'user_posts' ) {
-			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
+			$user_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s AND spam != 1 AND deleted != 1", $members_directory['user'] ));
 			if ( $user_count > 0 ) {
-				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
+				$user_details = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s", $members_directory['user'] ));
 				//=====================================//
 				if ($members_directory['page'] == 1){
 					$start = 0;
@@ -683,8 +685,7 @@ function members_directory_output($content) {
 					$math = $members_directory_per_page * $math;
 					$start = $math;
 				}
-				$query = "SELECT * FROM " . $wpdb->base_prefix . "site_posts WHERE post_author = '" . $user_details->ID . "' ORDER BY site_post_id DESC";
-				$query .= " LIMIT " . intval( $start ) . ", " . intval( $members_directory_per_page );
+				$query = $wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "site_posts WHERE post_author = %d ORDER BY site_post_id DESC LIMIT %d, %d", $user_details->ID, intval( $start ), intval( $members_directory_per_page ) );
 				$posts = $wpdb->get_results( $query, ARRAY_A );
 				//=====================================//
 				if ( count( $posts ) > 0 ) {
@@ -745,9 +746,9 @@ function members_directory_output($content) {
 				$content = __('Member not found.');
 			}
 		} else if ( $members_directory['page_type'] == 'user_comments' ) {
-			$user_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "' AND spam != 1 AND deleted != 1");
+			$user_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s AND spam != 1 AND deleted != 1", $members_directory['user']));
 			if ( $user_count > 0 ) {
-				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
+				$user_details = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s", $members_directory['user']));
 				//=====================================//
 				if ($members_directory['page'] == 1){
 					$start = 0;
@@ -756,8 +757,7 @@ function members_directory_output($content) {
 					$math = $members_directory_per_page * $math;
 					$start = $math;
 				}
-				$query = "SELECT * FROM " . $wpdb->base_prefix . "site_comments WHERE comment_author_user_id = '" . $user_details->ID . "' ORDER BY site_comment_id DESC";
-				$query .= " LIMIT " . intval( $start ) . ", " . intval( $members_directory_per_page );
+				$query = $wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "site_comments WHERE comment_author_user_id = %s ORDER BY site_comment_id DESC LIMIT %d, %d", $user_details->ID, intval( $start ), intval( $members_directory_per_page ) );
 				$comments = $wpdb->get_results( $query, ARRAY_A );
 				//=====================================//
 				if ( count( $comments ) > 0 ) {
@@ -823,9 +823,9 @@ function members_directory_output($content) {
 				//=====================================//
 				if ( $members_directory_profile_show_friends == 'yes' && function_exists('friends_make_current') ) {
 					if ( $friends_enable_approval == '1' ) {
-						$query = "SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = '" . $user_details->ID . "' AND friend_approved = '1' ORDER BY friend_ID DESC";
+						$query = $wpdb->prepare( "SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = %d AND friend_approved = '1' ORDER BY friend_ID DESC", $user_details->ID);
 					} else {
-						$query = "SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = '" . $user_details->ID . "' ORDER BY friend_ID DESC";
+						$query = $wpdb->prepare( "SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = %d ORDER BY friend_ID DESC", $user_details->ID );
 					}
 					$friends = $wpdb->get_results( $query, ARRAY_A );
 					if ( $friend_count > 0 ) {
@@ -836,8 +836,8 @@ function members_directory_output($content) {
 						$content .= '<center>';
 						foreach ($friends as $friend){
 							//$friend_blog_details = get_active_blog_for_user( $friend['friend_user_ID'] );
-							$friend_display_name = $wpdb->get_var("SELECT display_name FROM " . $wpdb->users . " WHERE ID = '" . $friend['friend_user_ID'] . "'");
-							$friend_nicename = $wpdb->get_var("SELECT display_name FROM " . $wpdb->users . " WHERE ID = '" . $friend['friend_user_ID'] . "'");
+							$friend_display_name = $wpdb->get_var($wpdb->prepare("SELECT display_name FROM " . $wpdb->users . " WHERE ID = %d", $friend['friend_user_ID']));
+							$friend_nicename = $wpdb->get_var($wpdb->prepare("SELECT display_name FROM " . $wpdb->users . " WHERE ID = %d", $friend['friend_user_ID']));
 							$content .= '<a href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $friend_nicename . '/" style="padding:0px;margin:1px;text-decoration:none;border:0px;">' .  get_avatar($friend['friend_user_ID'], 48, get_option('avatar_default')) . '</a>';
 						}
 						$content .= '</center>';
@@ -857,7 +857,7 @@ function members_directory_output($content) {
 
 function members_directory_user_posts_navigation_output($content, $per_page, $page, $user_nicename, $user_id, $next){
 	global $wpdb, $current_site, $members_directory_base;
-	$post_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "site_posts WHERE post_author = '" . $user_id . "' ORDER BY site_post_id DESC");
+	$post_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "site_posts WHERE post_author = %d ORDER BY site_post_id DESC", $user_id));
 	$post_count = $post_count - 1;
 
 	//generate page div
@@ -911,7 +911,7 @@ function members_directory_user_posts_navigation_output($content, $per_page, $pa
 
 function members_directory_user_comments_navigation_output($content, $per_page, $page, $user_nicename, $user_id, $next){
 	global $wpdb, $current_site, $members_directory_base;
-	$comment_count = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "site_comments WHERE comment_author_user_id = '" . $user_id . "' ORDER BY site_comment_id DESC");
+	$comment_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . $wpdb->base_prefix . "site_comments WHERE comment_author_user_id = %d ORDER BY site_comment_id DESC", $user_id));
 	$comment_count = $comment_count - 1;
 
 	//generate page div
@@ -973,7 +973,7 @@ function members_directory_search_form_output($content, $phrase) {
 		$content .= '<table border="0" border="0" cellpadding="2px" cellspacing="2px" width="100%" bgcolor="">';
 		$content .= '<tr>';
 		    $content .= '<td style="font-size:12px; text-align:left;" width="80%">';
-				$content .= '<input name="phrase" style="width: 100%;" type="text" value="' . $phrase . '">';
+				$content .= '<input name="phrase" style="width: 100%;" type="text" value="' . esc_attr($phrase) . '">';
 			$content .= '</td>';
 			$content .= '<td style="font-size:12px; text-align:right;" width="20%">';
 				$content .= '<input name="Submit" value="' . __('Search') . '" type="submit">';
