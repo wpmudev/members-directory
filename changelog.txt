@@ -3,6 +3,9 @@ Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Maniu (Incsub)
 
 == Changelog ==
 
+= 1.0.8.3 =
+* Fixed support for "Friends" plugin
+
 = 1.0.8.2 =
 * security improvements
 

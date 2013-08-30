@@ -3,9 +3,9 @@
 Plugin Name: Members Directory
 Plugin URI: http://premium.wpmudev.org/project/members-directory
 Description: Provides an automatic list of all the users on your site, with avatars, pagination, a built in search facility and extended customizable user profiles
-Author: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Mariusz Misiek (Incsib)
+Author: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Mariusz Misiek (Incsub)
 Author URI: http://ivan.sh
-Version: 1.0.8.2
+Version: 1.0.8.3
 Network: true
 WDP ID: 100
 */
@@ -146,7 +146,7 @@ function members_directory_site_admin_options() {
             </tr>
             <?php
 			}
-			if ( function_exists('friends_make_current') ) {
+			if ( function_exists('friends_add') ) {
 			?>
             <tr valign="top">
                 <th width="33%" scope="row"><?php _e('Profile: Show Friends') ?></th>
@@ -176,7 +176,7 @@ function members_directory_site_admin_options_process() {
 	if ( function_exists('comment_indexer_make_current') ) {
 	update_site_option( 'members_directory_profile_show_comments' , $_POST['members_directory_profile_show_comments']);
 	}
-	if ( function_exists('friends_make_current') ) {
+	if ( function_exists('friends_add') ) {
 	update_site_option( 'members_directory_profile_show_friends' , $_POST['members_directory_profile_show_friends']);
 	}
 }
@@ -337,6 +337,9 @@ function members_directory_title_output($title, $post_ID = '') {
 
 function members_directory_output($content) {
 	global $wpdb, $current_site, $post, $members_directory_base, $friends_enable_approval, $user_ID;
+	if(!isset($friends_enable_approval))
+		$friends_enable_approval = 1;
+
 	if ( $post->post_name == $members_directory_base ) {
 		$members_directory_sort_by = get_site_option('members_directory_sort_by', 'alphabetically');
 		$members_directory_per_page = get_site_option('members_directory_per_page', '10');
@@ -479,6 +482,21 @@ function members_directory_output($content) {
 		} else if ( $members_directory['page_type'] == 'user' ) {
 			$user_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s AND spam != 1 AND deleted != 1", $members_directory['user']));
 			if ( $user_count > 0 ) {
+				$message = '';
+				if ( $members_directory_profile_show_friends == 'yes' && function_exists('friends_add') ) {
+					if ( $_POST['action'] == 'members_directory_process_friend' ) {
+						if ($friends_enable_approval == 1) {
+							friends_add($_POST['user_id'], $_POST['friend_user_id'], '0');
+							friends_add_notification($_POST['friend_user_id'],$_POST['user_id']);
+							$message .= '<p id="friends-request-notification" class="members-dir-notification">' . __('Friend request has been sent') . '</p>';
+						} else {
+							friends_add($_POST['user_id'], $_POST['friend_user_id'], '1');
+							friends_add_notification($_POST['friend_user_id'],$_POST['user_id']);
+							$message .= '<p id="friends-request-notification" class="members-dir-notification">' . __('User has been successfully added') . '</p>';
+						}
+						$friend_added = 'yes';
+					}
+				}
 				$user_details = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = %s", $members_directory['user']));
 				$blog_details = get_active_blog_for_user( $user_details->ID );
 				$user_bio = get_user_meta( $user_details->ID, "description", true );
@@ -486,6 +504,14 @@ function members_directory_output($content) {
 				$user_website = $user_details->user_url;
 				$content .= '<div style="float:left; width:100%; margin-bottom:20px;">';
 				$content .= '<table border="0" border="0" cellpadding="2px" cellspacing="2px" width="100%" bgcolor="">';
+				if(!empty($message)){
+					$content .= '<tr>';
+						$content .= '<td valign="top" colspan="2">';
+							$content .= $message;
+						$content .= '</td>';
+					$content .= '</tr>';
+				}
+
 					$content .= '<tr>';
 						$content .= '<td valign="top" width="20%">';
 						$content .= '<div style="width:100%">';
@@ -494,17 +520,7 @@ function members_directory_output($content) {
 						$content .= '<a style="text-decoration:none;" href="' . $blog_details->siteurl . '/">' . get_avatar($user_details->ID, 96, get_option('avatar_default')) . '</a>';
 						$content .= '</div>';
 						$content .= '</center>';
-						if ( $members_directory_profile_show_friends == 'yes' && function_exists('friends_make_current') ) {
-							if ( $_POST['action'] == 'members_directory_process_friend' ) {
-								if ($friends_enable_approval == 1) {
-									friends_add($_POST['user_id'], $_POST['friend_user_id'], '0');
-									friends_add_notification($_POST['friend_user_id'],$_POST['user_id']);
-								} else {
-									friends_add($_POST['user_id'], $_POST['friend_user_id'], '1');
-									friends_add_notification($_POST['friend_user_id'],$_POST['user_id']);
-								}
-								$friend_added = 'yes';
-							}
+						if ( $members_directory_profile_show_friends == 'yes' && function_exists('friends_add') ) {
 							if ( $friends_enable_approval == '1' ) {
 								$friend_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->base_prefix . "friends WHERE user_ID = %d AND friend_approved = '1'", $user_details->ID));
 							} else {
@@ -522,7 +538,7 @@ function members_directory_output($content) {
 							$content .= '<div style="width:100%">';
 							if ( count( $friends  ) > 0 ) {
 								$content .= '<center>';
-								$content .= '<div style="width:96px;padding:3px; background-color:' . $members_directory_background_color . '; border-style:solid; border-color:' . $members_directory_border_color . '; border-width:1px;">';
+								$content .= '<div style="padding:3px; background-color:' . $members_directory_background_color . '; border-style:solid; border-color:' . $members_directory_border_color . '; border-width:1px;">';
 								foreach ($friends as $friend){
 									//$friend_blog_details = get_active_blog_for_user( $friend['friend_user_ID'] );
 									$friend_display_name = $wpdb->get_var($wpdb->prepare("SELECT display_name FROM " . $wpdb->users . " WHERE ID = %d", $friend['friend_user_ID'] ));
@@ -821,7 +837,7 @@ function members_directory_output($content) {
 			if ( $user_count > 0 ) {
 				$user_details = $wpdb->get_row("SELECT * FROM " . $wpdb->base_prefix . "users WHERE user_nicename = '" . $members_directory['user'] . "'");
 				//=====================================//
-				if ( $members_directory_profile_show_friends == 'yes' && function_exists('friends_make_current') ) {
+				if ( $members_directory_profile_show_friends == 'yes' && function_exists('friends_add') ) {
 					if ( $friends_enable_approval == '1' ) {
 						$query = $wpdb->prepare( "SELECT * FROM " . $wpdb->base_prefix . "friends WHERE user_ID = %d AND friend_approved = '1' ORDER BY friend_ID DESC", $user_details->ID);
 					} else {
