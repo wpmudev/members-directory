@@ -1,0 +1,320 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: members-directory\n"
+"POT-Creation-Date: 2013-10-11 13:34+0100\n"
+"PO-Revision-Date: 2013-10-11 13:35+0100\n"
+"Last-Translator: \n"
+"Language-Team: Incsub\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: C:\\Programs Portable\\xampp\\htdocs\\wordpress-incsub"
+"\\wp-content\\plugins\\members-directory\n"
+"X-Poedit-SearchPath-0: C:\\Programs Portable\\xampp\\htdocs\\wordpress-incsub"
+"\\wp-content\\plugins\\members-directory\n"
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:76
+msgid "Members"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:93
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1161
+msgid "Members Directory"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:97
+msgid "Sort By"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:100
+msgid "Username (A-Z)"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:101
+msgid "Newest"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:106
+msgid "Listing Per Page"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:123
+msgid "Background Color"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:125
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:130
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:135
+msgid "Default"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:128
+msgid "Alternate Background Color"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:133
+msgid "Border Color"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:141
+msgid "Profile: Show Posts"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:144
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:157
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:170
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1168
+msgid "Yes"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:145
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:158
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:171
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1169
+msgid "No"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:147
+msgid "Show posts on profile pages."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:154
+msgid "Profile: Show Comments"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:160
+msgid "Show comments on profile pages."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:167
+msgid "Profile: Show Friends"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:173
+msgid "Show friends on profile pages."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:180
+msgid "Recreate Members Page"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:208
+msgid "Page already exists. Check if its in trash."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:211
+msgid "Page successfully created."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:331
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:333
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1031
+msgid "Search"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:341
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:349
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:357
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:365
+msgid "Invalid User"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:347
+msgid "Posts"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:355
+msgid "Comments"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:363
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:572
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:884
+msgid "Friends"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:509
+msgid "No results..."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:527
+msgid "Friend request has been sent"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:531
+msgid "User has been successfully added"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:585
+msgid "All Friends"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:602
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:604
+msgid "Add Friend"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:615
+msgid "Name"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:618
+msgid "Website"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:621
+msgid "Bio"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:624
+msgid "This user has not entered any information."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:633
+msgid "Recent Posts"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:633
+msgid "All Posts"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:663
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:709
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:784
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:855
+msgid "More"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:668
+msgid "No recent posts."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:680
+msgid "Recent Comments"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:680
+msgid "All Comments"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:714
+msgid "No recent comments."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:726
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:798
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:869
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:901
+msgid "Member not found."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:759
+msgid "Posts By"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:789
+msgid "No posts available."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:831
+msgid "Comments By"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:860
+msgid "No comments available."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:904
+msgid "Invalid page."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:936
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:990
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1065
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1118
+msgid "Previous"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:952
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1006
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1081
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1133
+msgid "Next"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/members-directory.php:1165
+msgid "Show profile in sites members directory."
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/includes/class.wpmudev_dash_notification.php:62
+#, php-format
+msgid ""
+"Easily get updates, support, and one-click WPMU DEV plugin/theme "
+"installations right from in your dashboard - <strong><a href=\"%s\" title="
+"\"Install Now &raquo;\">install the free WPMU DEV Dashboard plugin</a></"
+"strong>. &nbsp;&nbsp;&nbsp;<small><a href=\"http://premium.wpmudev.org/wpmu-"
+"dev/update-notifications-plugin-information/\">(find out more)</a></small>"
+msgstr ""
+
+#: C:\Programs
+#: Portable\xampp\htdocs\wordpress-incsub\wp-content\plugins\members-directory/includes/class.wpmudev_dash_notification.php:66
+#, php-format
+msgid ""
+"Updates, Support, Premium Plugins, Community - <strong><a href=\"%s\" title="
+"\"Activate Now &raquo;\">activate the WPMU DEV Dashboard plugin now</a></"
+"strong>."
+msgstr ""

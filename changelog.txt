@@ -3,6 +3,11 @@ Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Maniu (Incsub)
 
 == Changelog ==
 
+= 1.0.8.4 =
+* Fixed support privacy settings
+* Added support for translations
+* Added ability to recreate members page
+
 = 1.0.8.3 =
 * Fixed support for "Friends" plugin
 
