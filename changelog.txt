@@ -3,6 +3,10 @@ Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Maniu (Incsub)
 
 == Changelog ==
 
+= 1.0.8.9 =
+* Added experimental support for single sites
+* Fixed dashboard include path for better compatibility
+
 = 1.0.8.4 =
 * Fixed support privacy settings
 * Added support for translations
