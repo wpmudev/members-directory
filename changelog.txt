@@ -3,6 +3,12 @@ Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Maniu (Incsub)
 
 == Changelog ==
 
+= 1.0.9 = 
+* Updated post queries to work with Post Indexer 3.x in addition to Post Indexer 2.x 
+* Corrected logic for Friends display output and actions.
+* Corrected Friend link to user nicename instead of display name. 
+* Update support for WPMU DEV Dashboard 3.0
+
 = 1.0.8.9 =
 * Added experimental support for single sites
 * Fixed dashboard include path for better compatibility
