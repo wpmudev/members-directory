@@ -1,7 +1,15 @@
-=== Members Directory ===
-Authors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits (Incsub), Maniu (Incsub)
+Plugin Name: Members Directory
+Author: WPMUDEV
+Lead developer: Maniu
+Contributors: Ivan Shaovchev, Ulrich Sossou, Andrew Billits
 
 == Changelog ==
+
+= 1.0.9.2 = 
+* Updated WPMU DEV Dashboard Notification
+
+= 1.0.9.1 = 
+* Fixed compatibility with comment indexer
 
 = 1.0.9 = 
 * Updated post queries to work with Post Indexer 3.x in addition to Post Indexer 2.x 

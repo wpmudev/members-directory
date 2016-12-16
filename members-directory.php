@@ -5,7 +5,7 @@ Plugin URI: http://premium.wpmudev.org/project/members-directory
 Description: Provides an automatic list of all the users on your site, with avatars, pagination, a built in search facility and extended customizable user profiles
 Author: WPMU DEV
 Author URI: http://premium.wpmudev.org
-Version: 1.0.9
+Version: 1.0.9.2
 Network: true
 WDP ID: 100
 */
@@ -85,7 +85,7 @@ function members_directory_page_setup() {
 
 	global $wpmudev_notices;
 	$wpmudev_notices[] = array( 'id'=> 100, 'name'=> 'Members Directory', 'screens' => array( 'settings-network' ) );
-	include_once( dirname(__FILE__) . '/lib/dash-notices/wpmudev-dash-notification.php' );
+	include_once( dirname(__FILE__) . '/lib/dash-notice/wpmudev-dash-notification.php' );
 
 	if ( get_site_option('members_directory_page_setup') != 'complete' && is_super_admin() ) {
 		$page_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->posts . " WHERE post_name = %s AND post_type = 'page'", $members_directory_base));
@@ -165,7 +165,7 @@ function members_directory_site_admin_options() {
 	            </tr>
 	            <?php
 				}
-	            if ( function_exists('comment_indexer_make_current') ) {
+	            if ( function_exists('comment_indexer_update_comment_status') ) {
 				?>
 	            <tr valign="top">
 	                <th scope="row"><label for="members_directory_profile_show_comments"><?php _e('Profile: Show Comments', 'members-directory') ?></label></th>
@@ -194,7 +194,7 @@ function members_directory_site_admin_options() {
 				?>
 			</table>
 			<p>
-				<a class="button" href="<?php echo add_query_arg(array('members_directory_action' => 'recreate_page', '_wpnonce' => wp_create_nonce('members_directory_action'))); ?>"><?php _e('Recreate Members Page', 'members-directory') ?></a>
+				<a class="button" href="<?php echo esc_url(add_query_arg(array('members_directory_action' => 'recreate_page', '_wpnonce' => wp_create_nonce('members_directory_action')))); ?>"><?php _e('Recreate Members Page', 'members-directory') ?></a>
 			</p>
 	</div>
 	<?php
@@ -208,7 +208,7 @@ function members_directory_site_admin_options_process() {
 	update_site_option( 'members_directory_border_color' , trim( $_POST['members_directory_border_color'] ));
 	if (( function_exists('post_indexer_make_current') ) || (class_exists('postindexermodel')))
 		update_site_option( 'members_directory_profile_show_posts' , $_POST['members_directory_profile_show_posts']);
-	if ( function_exists('comment_indexer_make_current') )
+	if ( function_exists('comment_indexer_update_comment_status') )
 		update_site_option( 'members_directory_profile_show_comments' , $_POST['members_directory_profile_show_comments']);
 	if ( function_exists('friends_add') )
 		update_site_option( 'members_directory_profile_show_friends' , $_POST['members_directory_profile_show_friends']);
@@ -726,7 +726,7 @@ function members_directory_output($content) {
 						$content .= '<br />';
 					}
 				}
-				if ( $members_directory_profile_show_comments == 'yes' && function_exists('comment_indexer_make_current') ) {
+				if ( $members_directory_profile_show_comments == 'yes' && function_exists('comment_indexer_update_comment_status') ) {
 					$content .= '<h3 style="border-bottom-style:solid; border-bottom-color:' . $members_directory_border_color . '; border-bottom-width:1px;">' . __('Recent Comments', 'members-directory') . ' (<a style="text-decoration:none;" href="http://' . $current_site->domain . $current_site->path . $members_directory_base . '/' . $members_directory['user'] . '/comments/">' . __('All Comments', 'members-directory') . '</a>)</h3>';
 					//===============================================//
 					$query = $wpdb->prepare( "SELECT * FROM " . $wpdb->base_prefix . "site_comments WHERE comment_author_user_id = %d ORDER BY site_comment_id DESC LIMIT 5", $user_details->ID);
